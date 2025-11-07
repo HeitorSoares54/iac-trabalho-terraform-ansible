@@ -1,0 +1,76 @@
+- name: Deploy da Aplicação Nginx
+  hosts: all
+  become: yes
+  tasks:
+    - name: "Instalar pré-requisitos (apt, git, python-pip)"
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - git
+          - python3-pip
+        state: present
+        update_cache: yes
+
+    - name: "Adicionar chave GPG oficial do Docker"
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: "Adicionar repositório Docker"
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+
+    - name: "Instalar Docker Engine"
+      apt:
+        name: docker-ce
+        state: present
+        update_cache: yes
+
+    - name: "Instalar Docker SDK para Ansible"
+      pip:
+        name: docker
+
+    - name: "Garantir que o serviço Docker está rodando"
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: "Adicionar usuário 'azureuser' ao grupo 'docker'"
+      user:
+        name: azureuser
+        groups: docker
+        append: yes
+
+    - name: "Reiniciar a VM para aplicar mudanças de grupo"
+      reboot:
+        msg: "Reiniciando para aplicar mudanças no grupo Docker"
+        connect_timeout: 5
+        reboot_timeout: 300
+        pre_reboot_delay: 0
+        post_reboot_delay: 60
+        test_command: whoami
+
+    - name: "Clonar repositório da aplicação Nginx"
+      git:
+        repo: "https://github.com/HeitorSoares54/iac-trabalho-docker"
+        dest: "/opt/app_source"
+        version: main
+        force: yes
+
+    - name: "Construir imagem Docker da aplicação Nginx"
+      command: docker build -t meu-nginx-app:latest /opt/app_source
+      args:
+        chdir: /opt/app_source
+
+    - name: "Iniciar container Nginx"
+      command: >
+        docker run -d --name meu-nginx-app
+        --restart always
+        -p 80:80
+        meu-nginx-app:latest
+      ignore_errors: yes
