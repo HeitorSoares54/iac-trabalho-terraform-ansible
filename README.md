@@ -8,6 +8,7 @@ O Terraform é utilizado para criar a infraestrutura base (Máquina Virtual, Gru
 
 O repositório está dividido em duas pastas principais: terraform e ansible.
 
+```
 iac-trabalho-terraform-ansible/
 │
 ├── ansible/
@@ -24,6 +25,7 @@ iac-trabalho-terraform-ansible/
 ├── .gitignore            # Ignora arquivos gerados pelo terraform e arquivos com credenciais
 ├── projeto_rsa.pub       # Chave SSH pública
 └── README.md             # Este arquivo
+```
 
 ⚙️ Configuração Prévia
 
