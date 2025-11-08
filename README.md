@@ -64,7 +64,8 @@ Exemplo de terraform/variables.tfvar:
 Terraform
 
 # Configuração do Grupo de Recursos e Localização
-location      = "northcentralus"  # região recomendada
+location      = "northcentralus" (região recomendada)
+
 resource_group_name = "rg-meu-trabalho-iac"
 
 # Configuração da Máquina Virtual
@@ -92,12 +93,13 @@ Bash
     Você ainda não vai editar este arquivo. Você precisará do IP gerado pelo Terraform no próximo passo.
 
 O arquivo hosts deverá ser preenchido da seguinte forma (após o Terraform rodar):
-Ini, TOML
 
-[azure_vm]
-# Substitua X.X.X.X pelo IP público da VM
-# Substitua o usuário e o caminho da chave privada
-X.X.X.X ansible_user=azureuser ansible_ssh_private_key_file=~/.ssh/id_rsa
+    [azure_vm]
+    X.X.X.X ansible_user=azureuser ansible_ssh_private_key_file=~/.ssh/id_rsa
+
+Substitua X.X.X.X pelo IP público da VM
+
+Substitua o usuário (caso necessário) e o caminho da chave privada
 
 Pontos importantes:
 
