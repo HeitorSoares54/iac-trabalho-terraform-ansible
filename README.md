@@ -1,5 +1,3 @@
-Entendido! Sem problemas. Aqui está o README ajustado para o provisionamento na Azure.
-
 IaC - Trabalho Terraform e Ansible
 
 Este projeto demonstra o uso de Terraform e Ansible para automatizar o provisionamento e a configuração de infraestrutura na Azure.
